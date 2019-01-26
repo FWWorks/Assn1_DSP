@@ -1,11 +1,11 @@
 from middleware.pub import *
 
 class Publisher:
-    def __init__(self, mode, ip_address=None, strength=0):
+    def __init__(self, mode, ip_address=None, broker_address=None, strength=0):
         self.ip_address = ip_address
         self.strength = strength
         if mode == 1:
-            self.pub_mw = PublisherDirectly(self.ip_address)
+            self.pub_mw = PublisherDirectly(self.ip_address, broker_address)
         elif mode == 2:
             self.pub_mw = PublisherViaBroker()
         else:
@@ -13,10 +13,11 @@ class Publisher:
 
 
     def publish(self, topic, value):
+        self.pub_mw.publish(topic, value)
         return 0
 
     def register(self, topic):
-        self.pub_mw.register()
+        self.pub_mw.register(topic)
         return 0
 
     def unregister(self, topic):
@@ -40,6 +41,7 @@ class Publisher:
         return 0
 
 
-p = Publisher(1, "tcp://127.0.0.1:5000")
-p.pub_mw.register()
+p = Publisher(1, "tcp://127.0.0.1:5000", "tcp://localhost:5555")
+#p.register("hello")
+p.publish("233", "555")
 

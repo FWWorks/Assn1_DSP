@@ -23,33 +23,14 @@ class Subscriber:
 
     def receive(self):
         self.sub_mid.receive()
-<<<<<<< HEAD
 
     def notify(self):
         if self.comm_type == sub_broker:
             while True:
                 self.sub_mid.notify()
-=======
-        # self.sub_mid.receive()
-    pass
->>>>>>> 3b75637f3a10fd3da74a604c80c445d7b3178dee
 
     def unregister(self, topic):
         self.sub_mid.unregister(topic)
 
     def exit(self):
         self.sub_mid.exit()
-    
-
-
-
-<<<<<<< HEAD
-=======
-pass
-
-
-p = Subscriber('localhost:1234', "tcp://127.0.0.1:5555")
-p.register("hello")
-while 1:
-    p.receive()
->>>>>>> 3b75637f3a10fd3da74a604c80c445d7b3178dee

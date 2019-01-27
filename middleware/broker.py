@@ -2,6 +2,7 @@ import zmq
 from collections import defaultdict
 import json
 
+
 class BrokerType1:
 
     def __init__(self, config):
@@ -9,7 +10,7 @@ class BrokerType1:
         self.table = defaultdict(list)
         context = zmq.Context()
         socket = context.socket(zmq.REP)
-        socket.bind("tcp://*:%s"%config['port'])
+        socket.bind("tcp://*:%s" % config['port'])
         self.socket = socket
 
     def handle_req(self):
@@ -17,7 +18,7 @@ class BrokerType1:
         req = json.loads(req_str)
 
         if req['type'] == 'add_publisher':
-            print('add a publisher. ip=%s, topic=%s'%(req['ip'], req['topic']))
+            print('add a publisher. ip=%s, topic=%s' % (req['ip'], req['topic']))
             self.table[req['topic']].append(req['ip'])
             self.socket.send_string('success')
 
@@ -25,10 +26,11 @@ class BrokerType1:
             print('add a subscriber')
             if req['topic'] in self.table:
                 pub_ip = self.table[req['topic']][0]
-                print('publisher ip = %s'%pub_ip)
+                print('publisher ip = %s' % pub_ip)
                 self.socket.send_string(pub_ip)
             else:
                 self.socket.send_string('')
+
 
 class BrokerType2:
 
@@ -37,7 +39,7 @@ class BrokerType2:
         self.table = {}
         context = zmq.Context()
         socket = context.socket(zmq.REP)
-        socket.bind("tcp://*:%s"%config['port'])
+        socket.bind("tcp://*:%s" % config['port'])
         self.socket = socket
 
     def handle_req(self):
@@ -45,7 +47,7 @@ class BrokerType2:
         req = json.loads(req_str)
 
         if req['type'] == 'add_publisher':
-            print('add a publisher. ip=%s, topic=%s'%(req['ip'], req['topic']))
+            print('add a publisher. ip=%s, topic=%s' % (req['ip'], req['topic']))
 
             if req['topic'] in self.table:
                 self.table[req['topic']]['pub'].append(req['ip'])
@@ -66,7 +68,7 @@ class BrokerType2:
             for ip in subs:
                 context = zmq.Context()
                 sub_socket = context.socket(zmq.REQ)
-                sub_socket.connect("tcp://%s"%ip)
+                sub_socket.connect("tcp://%s" % ip)
                 sub_socket.send_json({"Topic": req['topic'], "Value": req['value']})
                 result = sub_socket.recv_string()
-                print('msg sent to ip=%s, result=%s'%(ip, result))
+                print('msg sent to ip=%s, result=%s' % (ip, result))

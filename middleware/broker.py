@@ -14,8 +14,10 @@ class BrokerType1:
         self.socket = socket
 
     def handle_req(self):
-        req_str = self.socket.recv_json()
-        req = json.loads(req_str)
+        req = self.socket.recv_json()
+
+        if isinstance(req, str):
+            req = json.loads(req)
 
         if req['type'] == 'add_publisher':
             print('add a publisher. ip=%s, topic=%s' % (req['ip'], req['topic']))
@@ -56,7 +58,7 @@ class BrokerType2:
             self.socket.send_string('success')
 
         elif req['type'] == 'add_subscriber':
-            print('add a subscriber')
+            print('add a subscriber. ip=%s, topic=%s'%(req['ip'], req['topic']))
             if req['topic'] in self.table:
                 self.table[req['topic']]['sub'].append(req['ip'])
             else:

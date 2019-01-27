@@ -8,6 +8,7 @@ class SubDirect:
         self.ip = ip_self
         self.ip_b = ip_broker
         self.context = zmq.Context()
+<<<<<<< HEAD
         self.socket_sub = self.context.socket(zmq.REQ)
         self.socket_sub.connect(ip_broker)
 
@@ -19,6 +20,30 @@ class SubDirect:
 
     def unregister(self, topic):
         self.socket_sub.send_json(json.dump({"type": "remove_subscriber", "ip": self.ip, "topic": topic}))
+=======
+        self.socket = self.context.socket(zmq.SUB)
+    pass
+
+    def register(self, topic):
+        context = zmq.Context()
+        socket = context.socket(zmq.REQ)
+        socket.connect(self.ip_b)
+        socket.send_json(json.dumps({"type": "add_subscriber", "ip": self.ip, "topic": topic}))
+        res = socket.recv_string()
+        print(res)
+        self.socket.connect(res)
+        self.socket.setsockopt_string(zmq.SUBSCRIBE, '')
+
+    pass
+
+    def receive(self):
+        print(self.socket.recv_string())
+    pass
+
+    def unregister(self, topic):
+        self.socket.send_json(json.dumps({"type": "remove_subscriber", "ip": self.ip, "topic": topic}))
+    pass
+>>>>>>> 3b75637f3a10fd3da74a604c80c445d7b3178dee
 
     def exit(self):
         self.socket_sub.send_json(json.dump({"type": "exit_subscriber", "ip": self.ip, "topic": "all"}))

@@ -11,7 +11,7 @@ class SubscriberDirectly:
     def register(self, topic):
         context = zmq.Context()
         socket_broker = context.socket(zmq.REQ)
-        socket_broker.connet("tcp://%s" % self.config['broker'])
+        socket_broker.connect("tcp://%s" % self.config['broker'])
         socket_broker.send_json({'type': 'add_subscriber', 'ip': self.config['ip'], 'topic':topic})
         pub_ip = socket_broker.recv_string()
         assert pub_ip, 'no publisher for this topic: '%topic

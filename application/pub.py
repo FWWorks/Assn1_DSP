@@ -7,7 +7,7 @@ class Publisher:
         if mode == 1:
             self.pub_mw = PublisherDirectly(self.ip_address, broker_address)
         elif mode == 2:
-            self.pub_mw = PublisherViaBroker()
+            self.pub_mw = PublisherViaBroker(self.ip_address, broker_address)
         else:
             print ("mode error, please choose approach")
 

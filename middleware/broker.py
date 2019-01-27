@@ -13,8 +13,10 @@ class BrokerType1:
         self.socket = socket
 
     def handle_req(self):
-        req_str = self.socket.recv_json()
-        req = json.loads(req_str)
+        req = self.socket.recv_json()
+
+        if isinstance(req, str):
+            req = json.loads(req)
 
         if req['type'] == 'add_publisher':
             print('add a publisher. ip=%s, topic=%s'%(req['ip'], req['topic']))

@@ -60,6 +60,7 @@ class PublisherViaBroker:
             # self.__socket_bind()
             # self.socket.send_string(json.dumps({"type": "publish_req", "topic": topic, "value": value}))
             self.socket_broker.send_string(json.dumps({"type": "publish_req", "topic": topic, "value": value}))
+            msg = self.socket_broker.recv_json()
         return 0
 
     def register(self, topic):
@@ -76,6 +77,7 @@ class PublisherViaBroker:
         self.socket_broker = context.socket(zmq.REQ)
         self.socket_broker.connect(self.broker_address)
         self.socket_broker.send_json((json.dumps({'type': 'add_publisher', 'ip': self.ip_address, 'topic': topic})))
+        msg = self.socket_broker.recv_json()
 
 
     def unregister(self):

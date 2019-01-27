@@ -34,3 +34,10 @@ class Subscriber:
 
     def exit(self):
         self.sub_mid.exit()
+
+import time
+p = Subscriber("tcp://127.0.0.1:5001", "tcp://localhost:5555", 2)
+p.register("hello")
+while 1:
+    p.notify()
+    time.sleep(1)

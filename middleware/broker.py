@@ -46,7 +46,7 @@ class BrokerType2:
 
     def handle_req(self):
         req = self.socket.recv_json()
-
+        print(req)
         if isinstance(req, str):
             req = json.loads(req)
 
@@ -57,7 +57,7 @@ class BrokerType2:
                 self.table[req['topic']]['pub'].append(req['ip'])
             else:
                 self.table[req['topic']] = {'pub': [req['ip']], 'sub': []}
-            self.socket.send_string('success')
+            self.socket.send_json({})
 
         elif req['type'] == 'add_subscriber':
             print('add a subscriber. ip=%s, topic=%s'%(req['ip'], req['topic']))
@@ -65,14 +65,19 @@ class BrokerType2:
                 self.table[req['topic']]['sub'].append(req['ip'])
             else:
                 self.table[req['topic']] = {'pub': [], 'sub': [req['ip']]}
+            self.socket.send_json({})
 
-        elif req['type'] == 'publish':
+        elif req['type'] == 'publish_req':
             assert req['topic'] in self.table
             subs = self.table[req['topic']]['sub']
             for ip in subs:
+                import time
+                time.sleep(2)
                 context = zmq.Context()
                 sub_socket = context.socket(zmq.REQ)
-                sub_socket.connect("tcp://%s"%ip)
+                sub_socket.connect(ip)
                 sub_socket.send_json({"topic": req['topic'], "value": req['value']})
+
                 result = sub_socket.recv_string()
                 print('msg sent to ip=%s, result=%s' % (ip, result))
+            self.socket.send_json({})

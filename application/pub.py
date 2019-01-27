@@ -42,7 +42,7 @@ class Publisher:
 
 
 import time
-p = Publisher(1, "tcp://127.0.0.1:5000", "tcp://localhost:5555")
+p = Publisher(2, "tcp://127.0.0.1:5000", "tcp://localhost:5555")
 p.register("hello")
 while 1:
     p.publish("hello", "555")

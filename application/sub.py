@@ -1,4 +1,4 @@
-from middleware.subscriber_mid import *
+from middleware.sub import *
 
 
 class Subscriber:
@@ -14,7 +14,7 @@ class Subscriber:
     pass
 
     def receive(self):
-        print(sub_receive())
+        print(self.sub_mid.sub_receive())
         self.sub_mid.receive()
     pass
 

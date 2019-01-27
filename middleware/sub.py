@@ -8,7 +8,7 @@ class Subscriber1:
         self.ip = ip_self
         self.ip_b = ip_broker
         self.context = zmq.Context()
-        self.socket = context.socket(zmq.REQ)
+        self.socket = self.context.socket(zmq.REQ)
         self.socket.connect("tcp://" + ip_broker + ":5555")
     pass
 

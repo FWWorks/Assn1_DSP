@@ -9,4 +9,6 @@ while True:
     socket.send_string('123')
     time.sleep(1)
 
+    msg = input('input data:')
+    socket.send_string(msg)
 

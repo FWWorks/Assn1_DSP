@@ -43,8 +43,10 @@ class BrokerType2:
         self.socket = socket
 
     def handle_req(self):
-        req_str = self.socket.recv_json()
-        req = json.loads(req_str)
+        req = self.socket.recv_json()
+
+        if isinstance(req, str):
+            req = json.loads(req)
 
         if req['type'] == 'add_publisher':
             print('add a publisher. ip=%s, topic=%s'%(req['ip'], req['topic']))
@@ -69,6 +71,6 @@ class BrokerType2:
                 context = zmq.Context()
                 sub_socket = context.socket(zmq.REQ)
                 sub_socket.connect("tcp://%s"%ip)
-                sub_socket.send_json({"Topic": req['topic'], "Value": req['value']})
+                sub_socket.send_json({"topic": req['topic'], "value": req['value']})
                 result = sub_socket.recv_string()
                 print('msg sent to ip=%s, result=%s'%(ip, result))

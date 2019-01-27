@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
+    <list default="true" id="ca79db0a-9a11-4024-8b4d-cbb3f17382ae" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/sub.py" beforeDir="false" afterPath="$PROJECT_DIR$/application/sub.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middleware/broker.py" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/broker.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middleware/sub.py" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/sub.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middleware/sub1.py" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/sub1.py" afterDir="false" />
+=======
     <list default="true" id="3b994494-df6f-4e22-9877-5d859619d44b" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/middleware/pub.py" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/pub.py" afterDir="false" />
+>>>>>>> 3b75637f3a10fd3da74a604c80c445d7b3178dee
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -50,12 +59,21 @@
     </session>
   </component>
   <component name="FileEditorManager">
+<<<<<<< HEAD
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/middleware/sub.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="228">
+              <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+=======
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/middleware/pub.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="179">
               <caret line="61" column="30" selection-start-line="61" selection-start-column="30" selection-end-line="61" selection-end-column="30" />
+>>>>>>> 3b75637f3a10fd3da74a604c80c445d7b3178dee
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -64,10 +82,17 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+<<<<<<< HEAD
+        <entry file="file://$PROJECT_DIR$/application/sub.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="403">
+              <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
+=======
         <entry file="file://$PROJECT_DIR$/application/pub.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="855">
               <caret line="45" column="14" selection-start-line="45" selection-start-column="14" selection-end-line="45" selection-end-column="14" />
+>>>>>>> 3b75637f3a10fd3da74a604c80c445d7b3178dee
             </state>
           </provider>
         </entry>
@@ -75,9 +100,15 @@
     </leaf>
   </component>
   <component name="FindInProjectRecents">
+<<<<<<< HEAD
+    <findStrings>
+      <find>pass</find>
+    </findStrings>
+=======
     <dirStrings>
       <dir>E:\Git\Assn1_DSP</dir>
     </dirStrings>
+>>>>>>> 3b75637f3a10fd3da74a604c80c445d7b3178dee
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -85,10 +116,17 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+<<<<<<< HEAD
+        <option value="$PROJECT_DIR$/middleware/broker.py" />
+        <option value="$PROJECT_DIR$/middleware/sub1.py" />
+        <option value="$PROJECT_DIR$/application/sub.py" />
+        <option value="$PROJECT_DIR$/middleware/sub.py" />
+=======
         <option value="$PROJECT_DIR$/application/pub.py" />
         <option value="$PROJECT_DIR$/server.py" />
         <option value="$PROJECT_DIR$/client.py" />
         <option value="$PROJECT_DIR$/middleware/pub.py" />
+>>>>>>> 3b75637f3a10fd3da74a604c80c445d7b3178dee
       </list>
     </option>
   </component>
@@ -293,7 +331,11 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
+<<<<<<< HEAD
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32903227" />
+=======
       <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32786885" />
+>>>>>>> 3b75637f3a10fd3da74a604c80c445d7b3178dee
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -316,6 +358,25 @@
     <option name="LAST_COMMIT_MESSAGE" value="fix a bug" />
   </component>
   <component name="editorHistoryManager">
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/middleware/broker.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1178">
+          <caret line="62" column="74" lean-forward="true" selection-start-line="62" selection-start-column="74" selection-end-line="62" selection-end-column="74" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/middleware/sub1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="47" column="42" lean-forward="true" selection-start-line="47" selection-start-column="42" selection-end-line="47" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+=======
     <entry file="file://$PROJECT_DIR$/start_sub.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -341,6 +402,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="152">
           <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
+>>>>>>> 3b75637f3a10fd3da74a604c80c445d7b3178dee
         </state>
       </provider>
     </entry>
@@ -353,6 +415,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/middleware/broker.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="403">
+          <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/middleware/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/middleware/sub.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+=======
         <state relative-caret-position="380">
           <caret line="20" column="17" selection-start-line="20" selection-start-column="17" selection-end-line="20" selection-end-column="17" />
         </state>
@@ -390,6 +469,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="179">
           <caret line="61" column="30" selection-start-line="61" selection-start-column="30" selection-end-line="61" selection-end-column="30" />
+>>>>>>> 3b75637f3a10fd3da74a604c80c445d7b3178dee
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>

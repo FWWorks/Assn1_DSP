@@ -1,32 +1,50 @@
 from middleware.sub import *
 
+sub_direct = 1
+sub_broker = 2
+
 
 class Subscriber:
 
-    def __init__(self, ip_self, ip_broker):
+    def __init__(self, ip_self, ip_broker, comm_type):
         self.ip = ip_self
         self.ip_b = ip_broker
-        self.sub_mid = Subscriber1(self.ip, self.ip_b)
-    pass
+        if comm_type == sub_direct:
+            self.sub_mid = SubDirect(self.ip, self.ip_b)
+        elif comm_type == sub_broker:
+            self.sub_mid = SubBroker(self.ip, self.ip_b)
+        else:
+            print("Error in communication type: Only 1 and 2 are accepted.")
+            exit(1)
+        self.comm_type = comm_type
 
     def register(self, topic):
         self.sub_mid.register(topic)
-    pass
 
     def receive(self):
         self.sub_mid.receive()
+<<<<<<< HEAD
+
+    def notify(self):
+        if self.comm_type == sub_broker:
+            while True:
+                self.sub_mid.notify()
+=======
         # self.sub_mid.receive()
     pass
+>>>>>>> 3b75637f3a10fd3da74a604c80c445d7b3178dee
 
     def unregister(self, topic):
         self.sub_mid.unregister(topic)
-    pass
 
     def exit(self):
         self.sub_mid.exit()
-    pass
+    
 
 
+
+<<<<<<< HEAD
+=======
 pass
 
 
@@ -34,3 +52,4 @@ p = Subscriber('localhost:1234', "tcp://127.0.0.1:5555")
 p.register("hello")
 while 1:
     p.receive()
+>>>>>>> 3b75637f3a10fd3da74a604c80c445d7b3178dee

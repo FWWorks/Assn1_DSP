@@ -1,6 +1,7 @@
 import zmq
 import json
 
+
 class SubscriberDirectly:
 
     def __init__(self, config):
@@ -24,6 +25,7 @@ class SubscriberDirectly:
         print('receive a message: topic=%s, value=%s'%(msg['Topic'], msg['Value']))
         self.socket.send_string('success')
 
+
 class SubscriberViaBroker:
 
     def __init__(self, config):
@@ -36,7 +38,7 @@ class SubscriberViaBroker:
     def register(self, topic):
         context = zmq.Context()
         socket_broker = context.socket(zmq.REQ)
-        socket_broker.connet("tcp://%s" % self.config['broker'])
+        socket_broker.connect("tcp://%s" % self.config['broker'])
         socket_broker.send_json({'type': 'add_subscriber', 'ip': self.config['ip'], 'topic':topic})
 
     def notify(self):

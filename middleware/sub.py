@@ -2,38 +2,46 @@ import zmq
 import json
 
 
-class Subscriber1:
+class SubDirect:
 
     def __init__(self, ip_self, ip_broker):
         self.ip = ip_self
         self.ip_b = ip_broker
         self.context = zmq.Context()
-        self.socket = self.context.socket(zmq.SUB)
-    pass
+        self.socket_sub = self.context.socket(zmq.REQ)
+        self.socket_sub.connect(ip_broker)
 
     def register(self, topic):
-        context = zmq.Context()
-        socket = context.socket(zmq.REQ)
-        socket.connect(self.ip_b)
-        socket.send_json(json.dumps({"type": "add_subscriber", "ip": self.ip, "topic": topic}))
-        res = socket.recv_string()
-        print(res)
-        self.socket.connect(res)
-        self.socket.setsockopt_string(zmq.SUBSCRIBE, '')
-
-    pass
+        self.socket_sub.send_json(json.dump({"type": "add_subscriber", "ip": self.ip, "topic": topic}))
 
     def receive(self):
-        print(self.socket.recv_string())
-    pass
+        return self.socket_sub.recv_string()
 
     def unregister(self, topic):
-        self.socket.send_json(json.dumps({"type": "remove_subscriber", "ip": self.ip, "topic": topic}))
-    pass
+        self.socket_sub.send_json(json.dump({"type": "remove_subscriber", "ip": self.ip, "topic": topic}))
 
     def exit(self):
-        self.socket.send_json(json.dump({"type": "exit_subscriber", "ip": self.ip, "topic": "all"}))
-    pass
+        self.socket_sub.send_json(json.dump({"type": "exit_subscriber", "ip": self.ip, "topic": "all"}))
 
 
-pass
+class SubBroker(SubDirect):
+
+    def __init__(self, ip_self, ip_broker):
+        self.ip = ip_self
+        self.ip_b = ip_broker
+        self.context = None
+        self.socket_sub = None
+        self.socket_ntf = None
+
+    def register(self, topic):
+        self.context = zmq.Context()
+        self.socket_sub = self.context.socket(zmq.REQ)
+        self.socket_sub.connect(self.ip_b)
+        self.socket_ntf = self.context.socket(zmq.REP)
+        self.socket_ntf.connect(self.ip_b)
+        self.socket_sub.send_json({"type": "add_subscriber", "ip": self.ip, "topic": topic})
+
+    def notify(self):
+        msg = json.loads(self.socket_ntf.recv_json())
+        print("receive a message: topic = %s, value = %s" % (msg["Topic"], msg["Value"]))
+        self.socket_ntf.send_string("success")

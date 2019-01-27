@@ -1,8 +1,14 @@
 import zmq
+import time
 context = zmq.Context()
 socket = context.socket(zmq.PUB)
-socket.bind("tcp://127.0.0.1:5000")
+socket.bind("tcp://*:5556")
 while True:
+    # msg = input('input data:')
+    print('123')
+    socket.send_string('123')
+    time.sleep(1)
+
     msg = input('input data:')
     socket.send_string(msg)
 

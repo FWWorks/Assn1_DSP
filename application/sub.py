@@ -14,8 +14,8 @@ class Subscriber:
     pass
 
     def receive(self):
-        print(self.sub_mid.sub_receive())
         self.sub_mid.receive()
+        # self.sub_mid.receive()
     pass
 
     def unregister(self, topic):
@@ -28,3 +28,9 @@ class Subscriber:
 
 
 pass
+
+
+p = Subscriber('localhost:1234', "tcp://127.0.0.1:5555")
+p.register("hello")
+while 1:
+    p.receive()

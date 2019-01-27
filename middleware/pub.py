@@ -12,9 +12,10 @@ class PublisherDirectly:
 
     def publish(self, topic, value):
         if self.socket == None:
-            print ("haven't registered a publisher")
-        else:
             self.__socket_bind()
+            # print ("haven't registered a publisher")
+        else:
+            # self.__socket_bind()
             self.socket.send_string(json.dumps({"Topic": topic, "Value": value}))
         return 0
 

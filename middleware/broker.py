@@ -56,7 +56,7 @@ class BrokerType2:
             self.socket.send_string('success')
 
         elif req['type'] == 'add_subscriber':
-            print('add a subscriber')
+            print('add a subscriber. ip=%s, topic=%s'%(req['ip'], req['topic']))
             if req['topic'] in self.table:
                 self.table[req['topic']]['sub'].append(req['ip'])
             else:

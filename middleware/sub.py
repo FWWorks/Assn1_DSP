@@ -8,20 +8,27 @@ class Subscriber1:
         self.ip = ip_self
         self.ip_b = ip_broker
         self.context = zmq.Context()
-        self.socket = self.context.socket(zmq.REQ)
-        self.socket.connect("tcp://" + ip_broker + ":5555")
+        self.socket = self.context.socket(zmq.SUB)
     pass
 
     def register(self, topic):
-        self.socket.send_json(json.dump({"type": "add_subscriber", "ip": self.ip, "topic": topic}))
+        context = zmq.Context()
+        socket = context.socket(zmq.REQ)
+        socket.connect(self.ip_b)
+        socket.send_json(json.dumps({"type": "add_subscriber", "ip": self.ip, "topic": topic}))
+        res = socket.recv_string()
+        print(res)
+        self.socket.connect(res)
+        self.socket.setsockopt_string(zmq.SUBSCRIBE, '')
+
     pass
 
     def receive(self):
-        return self.socket.recv_string()
+        print(self.socket.recv_string())
     pass
 
     def unregister(self, topic):
-        self.socket.send_json(json.dump({"type": "remove_subscriber", "ip": self.ip, "topic": topic}))
+        self.socket.send_json(json.dumps({"type": "remove_subscriber", "ip": self.ip, "topic": topic}))
     pass
 
     def exit(self):

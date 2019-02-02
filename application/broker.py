@@ -7,6 +7,7 @@ class Broker:
         self.config = config
 
     def start(self):
-        broker = BrokerType2(self.config)
+        broker = BrokerType1(self.config)
+        # broker = BrokerType2(self.config)
         while True:
             broker.handle_req()

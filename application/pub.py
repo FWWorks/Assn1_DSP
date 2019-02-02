@@ -20,10 +20,18 @@ class Publisher:
         self.pub_mw.register(topic)
         return 0
 
-    def unregister(self, topic):
+    '''
+    publisher cancels a topic
+    '''
+    def unregister_topic(self, topic):
+        self.pub_mw.unregister(topic)
         return 0
 
+    '''
+    publish wants to exit the system
+    '''
     def drop_system(self):
+        self.pub_mw.drop_system()
         return 0
 
     def get_ip_address(self):

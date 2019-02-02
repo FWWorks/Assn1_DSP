@@ -1,3 +1,4 @@
+import time
 from middleware.sub import *
 
 sub_direct = 1
@@ -22,12 +23,12 @@ class Subscriber:
         self.sub_mid.register(topic)
 
     def receive(self):
-        self.sub_mid.receive()
+        if self.comm_type == sub_direct:
+            self.sub_mid.receive()
 
     def notify(self):
         if self.comm_type == sub_broker:
-            while True:
-                self.sub_mid.notify()
+            self.sub_mid.notify()
 
     def unregister(self, topic):
         self.sub_mid.unregister(topic)
@@ -35,9 +36,10 @@ class Subscriber:
     def exit(self):
         self.sub_mid.exit()
 
-import time
-p = Subscriber("tcp://127.0.0.1:5001", "tcp://localhost:5555", 2)
+
+p = Subscriber("tcp://127.0.0.1:5001", "tcp://localhost:5555", sub_broker)
 p.register("hello")
 while 1:
     p.notify()
     time.sleep(1)
+

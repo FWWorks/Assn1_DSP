@@ -7,15 +7,24 @@ class SubDirect:
     def __init__(self, ip_self, ip_broker):
         self.ip = ip_self
         self.ip_b = ip_broker
-        self.context = zmq.Context()
-        self.socket_sub = self.context.socket(zmq.REQ)
-        self.socket_sub.connect(ip_broker)
+        self.context_sub = None
+        self.context_rcv = None
+        self.socket_sub = None
+        self.socket_rcv = None
 
     def register(self, topic):
+        self.context_sub = zmq.Context()
+        self.socket_sub = self.context_sub.socket(zmq.REQ)
+        self.socket_sub.connect(self.ip_b)
+
         self.socket_sub.send_json(json.dumps({"type": "add_subscriber", "ip": self.ip, "topic": topic}))
 
+        self.context_rcv = zmq.Context()
+        self.socket_rcv = self.context_rcv.socket(zmq.SUB)
+        self.socket_rcv.bind(self.ip)
+
     def receive(self):
-        return self.socket_sub.recv_string()
+        return self.socket_rcv.recv_string()
 
     def unregister(self, topic):
         self.socket_sub.send_json(json.dumps({"type": "remove_subscriber", "ip": self.ip, "topic": topic}))
@@ -24,29 +33,34 @@ class SubDirect:
         self.socket_sub.send_json(json.dumps({"type": "exit_subscriber", "ip": self.ip, "topic": "all"}))
 
 
-class SubBroker(SubDirect):
+class SubBroker:
 
     def __init__(self, ip_self, ip_broker):
-        print(ip_self, ip_broker, 'xxxxxxxxxxxxxxxxxxxxxxxxxx')
-        super().__init__(ip_self, ip_broker)
+        # print(ip_self, ip_broker, 'XXX')
         self.ip = ip_self
         self.ip_b = ip_broker
-        self.context = None
+        self.context_sub = None
+        self.context_ntf = None
         self.socket_sub = None
         self.socket_ntf = None
 
     def register(self, topic):
-        self.context = zmq.Context()
-        self.socket_sub = self.context.socket(zmq.REQ)
+        self.context_sub = zmq.Context()
+        self.socket_sub = self.context_sub.socket(zmq.REQ)
         self.socket_sub.connect(self.ip_b)
-
-        context = zmq.Context()
-        self.socket_ntf = context.socket(zmq.REP)
-        self.socket_ntf.bind(self.ip)
         self.socket_sub.send_json({"type": "add_subscriber", "ip": self.ip, "topic": topic})
 
-    def notify(self):
+        self.context_ntf = zmq.Context()
+        self.socket_ntf = self.context_ntf.socket(zmq.REP)
+        self.socket_ntf.bind(self.ip)
 
-        msg = self.socket_ntf.recv_json()
+    def notify(self):
+        msg = json.dump(self.socket_ntf.recv_json())
         print("receive a message: topic = %s, value = %s" % (msg["topic"], msg["value"]))
         self.socket_ntf.send_string("success")
+
+    def unregister(self, topic):
+        self.socket_sub.send_json(json.dumps({"type": "remove_subscriber", "ip": self.ip, "topic": topic}))
+
+    def exit(self):
+        self.socket_sub.send_json(json.dumps({"type": "exit_subscriber", "ip": self.ip, "topic": "all"}))

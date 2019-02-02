@@ -1,6 +1,7 @@
 import zmq
 import json
 
+
 class PublisherDirectly:
     def __init__(self, ip_address, broker_address, strength=None):
         self.ip_address = ip_address
@@ -86,12 +87,11 @@ class PublisherViaBroker:
         msg = self.socket_broker.recv_json()
 
     '''
-       publisher wants to cancel a topic
-       '''
+    publisher wants to cancel a topic
+    '''
     def unregister(self, topic):
         self.socket_broker.send_json((json.dumps({'type': 'pub_unregister_topic', 'ip': self.ip_address, 'topic': topic})))
         return 0
-
 
     '''
     publisher wants to exit the system

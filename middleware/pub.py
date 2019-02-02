@@ -10,6 +10,7 @@ class PublisherDirectly:
         self.broker_address = broker_address
         self.socket_broker = None
         self.context = zmq.Context()
+        self.socket_heartbeat = None
 
     def publish(self, topic, value):
         if self.socket == None:
@@ -34,6 +35,9 @@ class PublisherDirectly:
         self.socket_broker = context.socket(zmq.REQ)
         self.socket_broker.connect(self.broker_address)
         self.socket_broker.send_json((json.dumps({'type': 'add_publisher', 'ip': self.ip_address, 'topic': topic})))
+        context2 = zmq.Context()
+        self.socket_heartbeat = context2.socket(zmq.REQ)
+        self.socket_heartbeat.connect(self.broker_address)
 
     '''
     publisher wants to cancel a topic
@@ -58,6 +62,7 @@ class PublisherViaBroker:
         self.broker_address = broker_address
         self.socket_broker = None
         self.context = zmq.Context()
+        self.socket_heartbeat = None
 
     def publish(self, topic, value):
         if self.socket == None:
@@ -85,6 +90,9 @@ class PublisherViaBroker:
         self.socket_broker.connect(self.broker_address)
         self.socket_broker.send_json((json.dumps({'type': 'add_publisher', 'ip': self.ip_address, 'topic': topic})))
         msg = self.socket_broker.recv_json()
+        context2 = zmq.Context()
+        self.socket_heartbeat = context2.socket(zmq.REQ)
+        self.socket_heartbeat.connect(self.broker_address)
 
     '''
     publisher wants to cancel a topic

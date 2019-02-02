@@ -44,7 +44,7 @@ class Publisher:
     def send_heart_beat(self):
         while True:
             time.sleep(5)
-            self.pub_mw.socket_heartbeat.send_str("1")
+            self.pub_mw.socket_heartbeat.send_json((json.dumps({'type': 'pub_heartbeat', 'ip': self.ip_address, 'mess': "1"})))
         return 0
 
 

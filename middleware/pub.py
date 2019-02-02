@@ -85,9 +85,17 @@ class PublisherViaBroker:
         self.socket_broker.send_json((json.dumps({'type': 'add_publisher', 'ip': self.ip_address, 'topic': topic})))
         msg = self.socket_broker.recv_json()
 
-
-    def unregister(self):
+    '''
+       publisher wants to cancel a topic
+       '''
+    def unregister(self, topic):
+        self.socket_broker.send_json((json.dumps({'type': 'pub_unregister_topic', 'ip': self.ip_address, 'topic': topic})))
         return 0
 
+
+    '''
+    publisher wants to exit the system
+    '''
     def drop_system(self):
+        self.socket_broker.send_json((json.dumps({'type': 'pub_exit_system', 'ip': self.ip_address})))
         return 0

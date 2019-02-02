@@ -46,9 +46,7 @@ class SubBroker(SubDirect):
         self.socket_sub.send_json({"type": "add_subscriber", "ip": self.ip, "topic": topic})
 
     def notify(self):
-        print('sending, soket=%s'%self.socket_ntf)
 
-        msg = json.loads(self.socket_ntf.recv_json())
-        print('sent')
+        msg = self.socket_ntf.recv_json()
         print("receive a message: topic = %s, value = %s" % (msg["topic"], msg["value"]))
         self.socket_ntf.send_string("success")

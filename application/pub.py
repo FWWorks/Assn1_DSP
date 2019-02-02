@@ -45,6 +45,7 @@ import time
 p = Publisher(2, "tcp://127.0.0.1:5000", "tcp://localhost:5555")
 p.register("hello")
 while 1:
-    p.publish("hello", "555")
+    x = input('msg=')
+    p.publish("hello", x)
     time.sleep(1)
 

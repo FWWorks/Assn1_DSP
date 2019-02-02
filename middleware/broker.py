@@ -21,9 +21,11 @@ class BrokerType1:
 
         if req['type'] == 'add_publisher':
             print('add a publisher. ip=%s, topic=%s' % (req['ip'], req['topic']))
-            self.table[req['topic']].append(req['ip'])
-            self.socket.send_string('success')
-
+            if req['ip'] not in self.table[req['topic']]:
+                self.table[req['topic']].append(req['ip'])
+                self.socket.send_string('success')
+            else:
+                self.socket.send_string('already existed. ip=%s, topic=%s'%(req['ip'], req['topic']))
         elif req['type'] == 'add_subscriber':
             print('add a subscriber')
             if req['topic'] in self.table:
@@ -54,7 +56,8 @@ class BrokerType2:
             print('add a publisher. ip=%s, topic=%s' % (req['ip'], req['topic']))
 
             if req['topic'] in self.table:
-                self.table[req['topic']]['pub'].append(req['ip'])
+                if req['ip'] not in self.table[req['topic']]['pub']:
+                    self.table[req['topic']]['pub'].append(req['ip'])
             else:
                 self.table[req['topic']] = {'pub': [req['ip']], 'sub': []}
             self.socket.send_json({})
@@ -62,7 +65,8 @@ class BrokerType2:
         elif req['type'] == 'add_subscriber':
             print('add a subscriber. ip=%s, topic=%s'%(req['ip'], req['topic']))
             if req['topic'] in self.table:
-                self.table[req['topic']]['sub'].append(req['ip'])
+                if req['ip'] not in self.table[req['topic']]['sub']:
+                    self.table[req['topic']]['sub'].append(req['ip'])
             else:
                 self.table[req['topic']] = {'pub': [], 'sub': [req['ip']]}
             self.socket.send_json({})

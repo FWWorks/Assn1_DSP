@@ -5,13 +5,14 @@ class Publisher:
     def __init__(self, mode, ip_address=None, broker_address=None, strength=0):
         self.ip_address = ip_address
         self.strength = strength
-        self.heartthread = threading.Thread(self.send_heart_beat)
+        self.heartthread = threading.Thread(target=self.send_heart_beat)
         if mode == 1:
             self.pub_mw = PublisherDirectly(self.ip_address, broker_address)
         elif mode == 2:
             self.pub_mw = PublisherViaBroker(self.ip_address, broker_address)
         else:
             print("mode error, please choose approach")
+        self.exited = False
 
     def publish(self, topic, value):
         self.pub_mw.publish(topic, value)
@@ -34,8 +35,9 @@ class Publisher:
     publish wants to exit the system
     '''
     def drop_system(self):
+        self.exited = True
         self.pub_mw.drop_system()
-        self.heartthread.stop()
+        self.heartthread.join()
         return 0
 
     '''
@@ -43,8 +45,11 @@ class Publisher:
     '''
     def send_heart_beat(self):
         while True:
+            if self.exited:
+                break
             time.sleep(5)
             self.pub_mw.socket_heartbeat.send_json((json.dumps({'type': 'pub_heartbeat', 'ip': self.ip_address, 'mess': "1"})))
+            res = self.pub_mw.socket_heartbeat.recv_json()
         return 0
 
 
@@ -66,8 +71,10 @@ class Publisher:
 import time
 p = Publisher(2, "tcp://127.0.0.1:5000", "tcp://localhost:5555")
 p.register("hello")
-while 1:
-    x = input('msg=')
-    p.publish("hello", x)
-    time.sleep(1)
+for i in range(3):
+    # x = input('ty')
 
+    p.publish("hello", '555')
+    time.sleep(3)
+
+p.drop_system()

@@ -2,6 +2,7 @@ import zmq
 from collections import defaultdict
 import json
 from datetime import datetime
+from copy import deepcopy
 
 class RegisterTable:
 
@@ -46,6 +47,7 @@ class RegisterTable:
         if isinstance(topics, str):
             topics = [topics]
         for t in topics:
+            print(t)
             try:
                 self.pubs[pub]['topics'].remove(t)
                 self.topics[t]['pub'].remove(pub)
@@ -162,7 +164,7 @@ class BrokerType2:
         elif req['type'] == 'pub_exit_system':
             print('pub exit. ip=%s' % (req['ip']))
             topics = self.table.get_pub_info(req['ip']).get('topics', [])
-            result = self.table.remove_pub(pub=req['ip'], topics=topics)
+            result = self.table.remove_pub(pub=req['ip'], topics=deepcopy(topics))
             self.socket.send_json({'msg': result})
 
         elif req['type'] == 'sub_unregister_topic':
@@ -173,7 +175,7 @@ class BrokerType2:
         elif req['type'] == 'sub_exit_system':
             print('sub exit. ip=%s' % (req['ip']))
             topics = self.table.get_sub_info(req['ip']).get('topics', [])
-            result = self.table.remove_sub(sub=req['ip'], topics=topics)
+            result = self.table.remove_sub(sub=req['ip'], topics=deepcopy(topics))
             self.socket.send_json({'msg': result})
 
         elif req['type'] == 'pub_heartbeat':

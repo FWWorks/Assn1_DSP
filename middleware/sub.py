@@ -55,7 +55,7 @@ class SubBroker:
         self.socket_ntf.bind(self.ip)
 
     def notify(self):
-        msg = json.dump(self.socket_ntf.recv_json())
+        msg = self.socket_ntf.recv_json()
         print("receive a message: topic = %s, value = %s" % (msg["topic"], msg["value"]))
         self.socket_ntf.send_string("success")
 

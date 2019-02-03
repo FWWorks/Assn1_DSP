@@ -32,7 +32,7 @@ class Publisher:
         return 0
 
     '''
-    publish wants to exit the system
+    publisher wants to exit the system
     '''
     def drop_system(self):
         self.exited = True

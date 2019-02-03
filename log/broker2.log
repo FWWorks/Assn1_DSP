@@ -1,15 +1,12 @@
-2019-02-03 16:44:25 INFO request={'type': 'add_publisher', 'ip': 'tcp://127.0.0.1:5005', 'topic': 'hello1'}, response=
-2019-02-03 16:44:25 INFO request={'type': 'publish_req', 'topic': 'hello1', 'value': '555'}, response=msg sent to ip=[], res=[]
-2019-02-03 16:44:26 INFO request={'type': 'publish_req', 'topic': 'hello1', 'value': '555'}, response=msg sent to ip=[], res=[]
-2019-02-03 16:44:27 INFO request={'type': 'publish_req', 'topic': 'hello1', 'value': '555'}, response=msg sent to ip=[], res=[]
-2019-02-03 16:44:28 INFO request={'type': 'publish_req', 'topic': 'hello1', 'value': '555'}, response=msg sent to ip=[], res=[]
-2019-02-03 16:44:29 INFO request={'type': 'publish_req', 'topic': 'hello1', 'value': '555'}, response=msg sent to ip=[], res=[]
-2019-02-03 16:44:30 INFO request={'type': 'pub_heartbeat', 'ip': 'tcp://127.0.0.1:5005', 'mess': '1'}, response=2019-02-03 16:44:30
-2019-02-03 16:44:30 INFO request={'type': 'publish_req', 'topic': 'hello1', 'value': '555'}, response=msg sent to ip=[], res=[]
-2019-02-03 16:44:31 INFO request={'type': 'publish_req', 'topic': 'hello1', 'value': '555'}, response=msg sent to ip=[], res=[]
-2019-02-03 16:44:31 INFO request={'type': 'add_subscriber', 'ip': 'tcp://127.0.0.1:5010', 'topic': 'hello1'}, response=
-2019-02-03 16:44:32 INFO request={'type': 'publish_req', 'topic': 'hello1', 'value': '555'}, response=msg sent to ip=['tcp://127.0.0.1:5010'], res=[{'msg': 'success'}]
-2019-02-03 16:44:33 INFO request={'type': 'publish_req', 'topic': 'hello1', 'value': '555'}, response=msg sent to ip=['tcp://127.0.0.1:5010'], res=[{'msg': 'success'}]
-2019-02-03 16:44:34 INFO request={'type': 'publish_req', 'topic': 'hello1', 'value': '555'}, response=msg sent to ip=['tcp://127.0.0.1:5010'], res=[{'msg': 'success'}]
-2019-02-03 16:44:35 INFO request={'type': 'pub_heartbeat', 'ip': 'tcp://127.0.0.1:5005', 'mess': '1'}, response=2019-02-03 16:44:35
-2019-02-03 16:44:35 INFO request={'type': 'publish_req', 'topic': 'hello1', 'value': '555'}, response=msg sent to ip=['tcp://127.0.0.1:5010'], res=[{'msg': 'success'}]
+2019-02-03 16:50:02 INFO request={'type': 'add_publisher', 'ip': 'tcp://127.0.0.1:5005', 'topic': 'hello1'}, response=
+2019-02-03 16:50:02 INFO request={'type': 'publish_req', 'topic': 'hello1', 'value': '555'}, response=msg sent to ip=[], res=[]
+2019-02-03 16:50:03 INFO request={'type': 'publish_req', 'topic': 'hello1', 'value': '555'}, response=msg sent to ip=[], res=[]
+2019-02-03 16:50:04 INFO request={'type': 'publish_req', 'topic': 'hello1', 'value': '555'}, response=msg sent to ip=[], res=[]
+2019-02-03 16:50:05 INFO request={'type': 'publish_req', 'topic': 'hello1', 'value': '555'}, response=msg sent to ip=[], res=[]
+2019-02-03 16:50:06 INFO request={'type': 'publish_req', 'topic': 'hello1', 'value': '555'}, response=msg sent to ip=[], res=[]
+2019-02-03 16:50:07 INFO request={'type': 'pub_heartbeat', 'ip': 'tcp://127.0.0.1:5005', 'mess': '1'}, response=2019-02-03 16:50:07
+2019-02-03 16:50:07 INFO request={'type': 'publish_req', 'topic': 'hello1', 'value': '555'}, response=msg sent to ip=[], res=[]
+2019-02-03 16:50:08 INFO request={'type': 'publish_req', 'topic': 'hello1', 'value': '555'}, response=msg sent to ip=[], res=[]
+2019-02-03 16:50:09 INFO request={'type': 'add_subscriber', 'ip': 'tcp://127.0.0.1:5010', 'topic': 'hello1'}, response=
+2019-02-03 16:50:09 INFO request={'type': 'publish_req', 'topic': 'hello1', 'value': '555'}, response=msg sent to ip=['tcp://127.0.0.1:5010'], res=[{'msg': 'success'}]
+2019-02-03 16:50:11 INFO request={'type': 'publish_req', 'topic': 'hello1', 'value': '555'}, response=msg sent to ip=['tcp://127.0.0.1:5010'], res=[{'msg': 'success'}]

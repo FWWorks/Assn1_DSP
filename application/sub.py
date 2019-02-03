@@ -23,6 +23,9 @@ class Subscriber:
 
     def register(self, topic):
         self.sub_mid.register(topic)
+        if self.heartthread.is_alive() == False:
+            self.heartthread.start()
+        return 0
 
     def receive(self):
         if self.comm_type == sub_direct:

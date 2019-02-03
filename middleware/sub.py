@@ -33,6 +33,7 @@ class SubDirect:
         msg = self.socket_rcv.recv_json()
         if msg['topic'] in self.topics_list:
             print("receive a message: topic = %s, value = %s" % (msg["topic"], msg["value"]))
+        return msg
 
     def unregister(self, topic):
         self.socket_sub.send_json(json.dumps({"type": "remove_subscriber", "ip": self.ip, "topic": topic}))
@@ -71,6 +72,7 @@ class SubBroker:
         msg = self.socket_ntf.recv_json()
         print("receive a message: topic = %s, value = %s" % (msg["topic"], msg["value"]))
         self.socket_ntf.send_json({'msg': 'success'})
+        return msg
 
     def unregister(self, topic):
         self.socket_sub.send_json(json.dumps({"type": "sub_unregister_topic", "ip": self.ip, "topic": topic}))

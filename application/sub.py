@@ -1,5 +1,6 @@
 import threading,time
 from middleware.sub import *
+from logger import get_logger
 
 sub_direct = 1
 sub_broker = 2
@@ -7,7 +8,7 @@ sub_broker = 2
 
 class Subscriber:
 
-    def __init__(self, ip_self, ip_broker, comm_type):
+    def __init__(self, ip_self, ip_broker, comm_type, logfile='log/sub.log'):
         self.ip = ip_self
         self.ip_b = ip_broker
         self.heartthread = threading.Thread(target=self.send_heart_beat)
@@ -20,18 +21,22 @@ class Subscriber:
             exit(1)
         self.comm_type = comm_type
         self.exited = False
+        self.logger = get_logger(logfile)
 
     def register(self, topic):
         self.sub_mid.register(topic)
         if self.heartthread.is_alive() == False:
             self.heartthread.start()
+        self.logger.info('sub register to bloker on %s. ip=%s, topic=%s' % (self.ip_b, self.ip, topic))
         return 0
 
     def receive(self):
+        msg = ''
         if self.comm_type == sub_direct:
-            self.sub_mid.receive()
+            msg = self.sub_mid.receive()
         if self.comm_type == sub_broker:
-            self.sub_mid.notify()
+            msg = self.sub_mid.notify()
+        self.logger.info('receive a msg=%s'%msg)
 
     '''
     subscriber cancels a topic

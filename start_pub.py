@@ -16,7 +16,7 @@ else:
 config = ConfigObj(config_path)[item]
 
 p = Publisher(mode=int(config['mode']), ip_address=config['pub_addr'],
-              broker_address=config['broker_addr'], strength=config['strength'])
+              broker_address=config['broker_addr'], strength=config['strength'], logfile=config['logfile'])
 topic = 'hello1'
 # p.register("hello")
 p.register(topic)

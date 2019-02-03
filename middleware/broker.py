@@ -2,6 +2,7 @@ import zmq
 import json
 from datetime import datetime
 from copy import deepcopy
+from logger import get_logger
 
 class RegisterTable:
 
@@ -111,13 +112,14 @@ class BrokerBase:
             'sub_heartbeat': self._sub_heartbeat,
         }
         self.socket = None
+        self.logger = get_logger(config['logfile'])
 
     def handle_req(self):
         req = self.socket.recv_json()
         if isinstance(req, str):
             req = json.loads(req)
         result = self.req_handler[req['type']](req)
-        print('request=%s, response=%s'%(req, result))
+        self.logger.info('request=%s, response=%s'%(req, result))
         self.socket.send_json({'msg': result})
 
     def _add_pub(self, req):

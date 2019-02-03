@@ -29,7 +29,7 @@ class PublisherDirectly:
     def __socket_bind(self):
         if self.socket is None:
             self.socket = self.context.socket(zmq.PUB)
-            self.socket.bind(self.ip_address)
+            self.socket.bind("tcp://*:%s" % self.ip_address.split(":")[2])
 
     def __reg_broker(self, topic):
         context = zmq.Context()
@@ -83,7 +83,8 @@ class PublisherViaBroker:
 
     def __socket_bind(self):
         self.socket = self.context.socket(zmq.PUB)
-        self.socket.bind(self.ip_address)
+        self.socket.bind("tcp://*:%s" % self.ip_address.split(":")[2])
+        # self.socket.bind(self.ip_address)
 
     def __reg_broker(self, topic):
         context = zmq.Context()

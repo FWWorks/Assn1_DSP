@@ -10,7 +10,7 @@ else:
 if len(sys.argv) == 3:
     item = sys.argv[3]
 else:
-    item = 'Broker2'
+    item = 'Broker1'
 
 config = ConfigObj(config_path)
 broker = Broker(config=config[item])

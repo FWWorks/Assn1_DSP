@@ -11,14 +11,14 @@ else:
 if len(sys.argv) == 3:
     item = sys.argv[3]
 else:
-    item = 'Sub3'
+    item = 'Sub1'
 
 config = ConfigObj(config_path)[item]
 
 p = Subscriber(ip_self=config['sub_addr'], ip_broker=config['broker_addr'], comm_type=int(config['mode']))
 p.register("hello1")
-# while 1:
-for i in range(5):
+while 1:
+#for i in range(5):
     # p.notify()
     p.receive()
     time.sleep(1)

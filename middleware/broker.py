@@ -63,7 +63,7 @@ class RegisterTable:
                 self.topics[t]['sub'].remove(sub)
             except KeyError:
                 pass
-        if sub in self.subs and not self.pubs[sub]['topics']:
+        if sub in self.subs and not self.subs[sub]['topics']:
             self.subs.pop(sub)
         return ''
 
@@ -151,6 +151,7 @@ class BrokerBase:
         return result
 
     def _sub_heartbeat(self, req):
+        print('xxxxxxxxxxxxxxxxxxxxxx')
         result = self.table.refresh_sub(sub=req['ip'])
         return result
 
@@ -183,10 +184,19 @@ class BrokerType2(BrokerBase):
 
     def _publish_req(self, req):
         subs = self.table.get_subs(req['topic'])
+        res = []
         for ip in subs:
             context = zmq.Context()
             sub_socket = context.socket(zmq.REQ)
+            sub_socket.setsockopt(zmq.LINGER, 0)
+            sub_socket.RCVTIMEO = 1000
             sub_socket.connect(ip)
             sub_socket.send_json({"topic": req['topic'], "value": req['value']})
-            result = sub_socket.recv_json()
-        return 'msg sent to ip=%s' % subs
+            try:
+                result = sub_socket.recv_json()
+                res.append(result)
+            except zmq.error.Again:
+                res.append('fail to sub=%s'%ip)
+            finally:
+                sub_socket.close()
+        return 'msg sent to ip=%s, res=%s' % (subs, res)

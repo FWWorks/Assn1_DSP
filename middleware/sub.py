@@ -58,6 +58,7 @@ class SubBroker:
         self.socket_sub = self.context_sub.socket(zmq.REQ)
         self.socket_sub.connect(self.ip_b)
         self.socket_sub.send_json({"type": "add_subscriber", "ip": self.ip, "topic": topic})
+        res = self.socket_sub.recv_json()
 
         self.context_ntf = zmq.Context()
         self.socket_ntf = self.context_ntf.socket(zmq.REP)
@@ -72,7 +73,7 @@ class SubBroker:
         self.socket_ntf.send_json({'msg': 'success'})
 
     def unregister(self, topic):
-        self.socket_sub.send_json(json.dumps({"type": "remove_subscriber", "ip": self.ip, "topic": topic}))
+        self.socket_sub.send_json(json.dumps({"type": "sub_unregister_topic", "ip": self.ip, "topic": topic}))
 
     def exit(self):
-        self.socket_sub.send_json(json.dumps({"type": "exit_subscriber", "ip": self.ip, "topic": "all"}))
+        self.socket_sub.send_json(json.dumps({"type": "sub_exit_system", "ip": self.ip, "topic": "all"}))

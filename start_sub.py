@@ -17,7 +17,10 @@ config = ConfigObj(config_path)[item]
 
 p = Subscriber(ip_self=config['sub_addr'], ip_broker=config['broker_addr'], comm_type=int(config['mode']))
 p.register("hello1")
-while 1:
+# while 1:
+for i in range(5):
     # p.notify()
     p.receive()
     time.sleep(1)
+
+p.exit()

@@ -23,6 +23,9 @@ p.register(topic)
 # for i in range(300):
 print('pub ip=%s. topic=%s'%(p.ip_address, topic))
 while 1:
+# for i in range(5):
     # x = input('ty')
     p.publish(topic, '555')
     time.sleep(1)
+
+p.drop_system()

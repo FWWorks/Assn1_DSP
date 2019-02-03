@@ -58,7 +58,7 @@ class Subscriber:
                 break
             time.sleep(5)
             self.sub_mid.socket_heartbeat.send_json(
-                (json.dumps({'type': 'pub_heartbeat', 'ip': self.ip, 'mess': "2"})))
+                (json.dumps({'type': 'sub_heartbeat', 'ip': self.ip, 'mess': "5"})))
             res = self.sub_mid.socket_heartbeat.recv_json()
         return 0
 

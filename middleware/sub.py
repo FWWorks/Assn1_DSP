@@ -63,7 +63,7 @@ class SubBroker:
 
         self.context_ntf = zmq.Context()
         self.socket_ntf = self.context_ntf.socket(zmq.REP)
-        self.socket_ntf.bind(self.ip)
+        self.socket_ntf.bind("tcp://*:%s" % self.ip.split(":")[2])
         context2 = zmq.Context()
         self.socket_heartbeat = context2.socket(zmq.REQ)
         self.socket_heartbeat.connect(self.ip_b)

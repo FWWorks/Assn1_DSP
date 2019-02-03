@@ -11,7 +11,7 @@ else:
 if len(sys.argv) == 3:
     item = sys.argv[3]
 else:
-    item = 'Pub3'
+    item = 'Pub4'
 
 config = ConfigObj(config_path)[item]
 

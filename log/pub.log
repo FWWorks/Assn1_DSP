@@ -1,15 +1,13 @@
-2019-02-03 16:20:06 INFO pub register to bloker on tcp://127.0.0.1:5555. ip=tcp://127.0.0.1:5000, topic=hello1
-2019-02-03 16:20:06 INFO publishing a msg. topic=hello1, value=555
-2019-02-03 16:20:07 INFO publishing a msg. topic=hello1, value=555
-2019-02-03 16:20:08 INFO publishing a msg. topic=hello1, value=555
-2019-02-03 16:20:09 INFO publishing a msg. topic=hello1, value=555
-2019-02-03 16:20:11 INFO publishing a msg. topic=hello1, value=555
-2019-02-03 16:20:12 INFO publishing a msg. topic=hello1, value=555
-2019-02-03 16:20:14 INFO publishing a msg. topic=hello1, value=555
-2019-02-03 16:20:16 INFO publishing a msg. topic=hello1, value=555
-2019-02-03 16:20:18 INFO publishing a msg. topic=hello1, value=555
-2019-02-03 16:20:20 INFO publishing a msg. topic=hello1, value=555
-2019-02-03 16:20:22 INFO publishing a msg. topic=hello1, value=555
-2019-02-03 16:20:24 INFO publishing a msg. topic=hello1, value=555
-2019-02-03 16:20:26 INFO publishing a msg. topic=hello1, value=555
-2019-02-03 16:20:28 INFO publishing a msg. topic=hello1, value=555
+2019-02-03 16:44:25 INFO pub register to bloker on tcp://127.0.0.1:5555. ip=tcp://127.0.0.1:5005, topic=hello1
+2019-02-03 16:44:25 INFO publishing a msg. topic=hello1, value=555
+2019-02-03 16:44:26 INFO publishing a msg. topic=hello1, value=555
+2019-02-03 16:44:27 INFO publishing a msg. topic=hello1, value=555
+2019-02-03 16:44:28 INFO publishing a msg. topic=hello1, value=555
+2019-02-03 16:44:29 INFO publishing a msg. topic=hello1, value=555
+2019-02-03 16:44:30 INFO publishing a msg. topic=hello1, value=555
+2019-02-03 16:44:31 INFO publishing a msg. topic=hello1, value=555
+2019-02-03 16:44:32 INFO publishing a msg. topic=hello1, value=555
+2019-02-03 16:44:33 INFO publishing a msg. topic=hello1, value=555
+2019-02-03 16:44:34 INFO publishing a msg. topic=hello1, value=555
+2019-02-03 16:44:35 INFO publishing a msg. topic=hello1, value=555
+2019-02-03 16:44:36 INFO publishing a msg. topic=hello1, value=555

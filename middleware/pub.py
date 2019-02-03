@@ -18,7 +18,7 @@ class PublisherDirectly:
             # print ("haven't registered a publisher")
         else:
             # self.__socket_bind()
-            self.socket.send_string(json.dumps({"Topic": topic, "Value": value}))
+            self.socket.send_json({"topic": topic, "value": value})
         return 0
 
     def register(self, topic):
@@ -27,8 +27,9 @@ class PublisherDirectly:
         return 0
 
     def __socket_bind(self):
-        self.socket = self.context.socket(zmq.PUB)
-        self.socket.bind(self.ip_address)
+        if self.socket is None:
+            self.socket = self.context.socket(zmq.PUB)
+            self.socket.bind(self.ip_address)
 
     def __reg_broker(self, topic):
         context = zmq.Context()

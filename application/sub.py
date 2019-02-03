@@ -25,8 +25,6 @@ class Subscriber:
     def receive(self):
         if self.comm_type == sub_direct:
             self.sub_mid.receive()
-
-    def notify(self):
         if self.comm_type == sub_broker:
             self.sub_mid.notify()
 
@@ -37,10 +35,4 @@ class Subscriber:
         self.sub_mid.exit()
 
 
-p = Subscriber("tcp://127.0.0.1:5001", "tcp://localhost:5555", sub_direct)
-p.register("hello")
-while 1:
-    # p.notify()
-    p.receive()
-    time.sleep(1)
 

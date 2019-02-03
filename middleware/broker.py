@@ -1,5 +1,4 @@
 import zmq
-from collections import defaultdict
 import json
 from datetime import datetime
 from copy import deepcopy
@@ -21,10 +20,9 @@ class RegisterTable:
         else:
             self.pubs[pub] = {'since': now, 'topics': set(topics)}
         for t in topics:
-            if t in self.topics:
-                self.topics[t]['pub'].add(pub)
-            else:
-                self.topics[t] = {'pub': set(), 'sub':set()}
+            if t not in self.topics:
+                self.topics[t] = {'pub': set(), 'sub': set()}
+            self.topics[t]['pub'].add(pub)
         return ''
 
     def add_sub(self, sub, topics):
@@ -37,10 +35,9 @@ class RegisterTable:
         else:
             self.subs[sub] = {'since': now, 'topics': set(topics)}
         for t in topics:
-            if t in self.topics:
-                self.topics[t]['sub'].add(sub)
-            else:
-                self.topics[t] = {'pub': set(), 'sub':set()}
+            if t not in self.topics:
+                self.topics[t] = {'pub': set(), 'sub': set()}
+            self.topics[t]['sub'].add(sub)
         return ''
 
     def remove_pub(self, pub, topics):
@@ -98,103 +95,98 @@ class RegisterTable:
     def get_sub_info(self, pub):
         return self.pubs.get(pub, {})
 
-class BrokerType1:
+class BrokerBase:
 
     def __init__(self, config):
         self.config = config
-        self.table = defaultdict(list)
-        context = zmq.Context()
-        socket = context.socket(zmq.REP)
-        socket.bind("tcp://*:%s" % config['port'])
-        self.socket = socket
-
-    def handle_req(self):
-        req = self.socket.recv_json()
-
-        if isinstance(req, str):
-            req = json.loads(req)
-
-        if req['type'] == 'add_publisher':
-            print('add a publisher. ip=%s, topic=%s' % (req['ip'], req['topic']))
-            if req['ip'] not in self.table[req['topic']]:
-                self.table[req['topic']].append(req['ip'])
-                self.socket.send_string('success')
-            else:
-                self.socket.send_string('already existed. ip=%s, topic=%s'%(req['ip'], req['topic']))
-        elif req['type'] == 'add_subscriber':
-            print('add a subscriber')
-            if req['topic'] in self.table:
-                pub_ip = self.table[req['topic']][0]
-                print('publisher ip = %s' % pub_ip)
-                self.socket.send_string(pub_ip)
-            else:
-                self.socket.send_string('')
-
-class BrokerType2:
-
-    def __init__(self, config):
-        self.config = config
-        context = zmq.Context()
-        socket = context.socket(zmq.REP)
-        socket.bind("tcp://*:%s" % config['port'])
-        self.socket = socket
         self.table = RegisterTable()
+        self.req_handler = {
+            'add_publisher': self._add_pub,
+            'pub_unregister_topic': self._pub_unregister_topic,
+            'pub_exit_system': self._pub_exit_system,
+            'pub_heartbeat': self._pub_heartbeat,
+            'add_subscriber': self._add_sub,
+            'sub_unregister_topic': self._sub_unregister_topic,
+            'sub_exit_system': self._sub_exit_system,
+            'sub_heartbeat': self._sub_heartbeat,
+        }
+        self.socket = None
 
     def handle_req(self):
         req = self.socket.recv_json()
-        print(req)
         if isinstance(req, str):
             req = json.loads(req)
+        result = self.req_handler[req['type']](req)
+        print('request=%s, response=%s'%(req, result))
+        self.socket.send_json({'msg': result})
 
-        if req['type'] == 'add_publisher':
-            print('add a publisher. ip=%s, topic=%s' % (req['ip'], req['topic']))
-            result = self.table.add_pub(pub=req['ip'], topics=req['topic'])
-            self.socket.send_json({'msg': result})
+    def _add_pub(self, req):
+        result = self.table.add_pub(pub=req['ip'], topics=req['topic'])
+        return result
 
-        elif req['type'] == 'add_subscriber':
-            print('add a subscriber. ip=%s, topic=%s'%(req['ip'], req['topic']))
-            result = self.table.add_sub(sub=req['ip'], topics=req['topic'])
-            self.socket.send_json({'msg': result})
+    def _add_sub(self, req):
+        result = self.table.add_sub(sub=req['ip'], topics=req['topic'])
+        return result
 
-        elif req['type'] == 'pub_unregister_topic':
-            print('unregister a topic from pub. ip=%s, topic=%s' % (req['ip'], req['topic']))
-            result = self.table.remove_pub(pub=req['ip'], topics=req['topic'])
-            self.socket.send_json({'msg': result})
+    def _pub_unregister_topic(self,req):
+        result = self.table.remove_pub(pub=req['ip'], topics=req['topic'])
+        return result
 
-        elif req['type'] == 'pub_exit_system':
-            print('pub exit. ip=%s' % (req['ip']))
-            topics = self.table.get_pub_info(req['ip']).get('topics', [])
-            result = self.table.remove_pub(pub=req['ip'], topics=deepcopy(topics))
-            self.socket.send_json({'msg': result})
+    def _pub_exit_system(self, req):
+        topics = self.table.get_pub_info(req['ip']).get('topics', [])
+        result = self.table.remove_pub(pub=req['ip'], topics=deepcopy(topics))
+        return result
 
-        elif req['type'] == 'sub_unregister_topic':
-            print('unregister a topic from sub. ip=%s, topic=%s' % (req['ip'], req['topic']))
-            result = self.table.remove_sub(sub=req['ip'], topics=req['topic'])
-            self.socket.send_json({'msg': result})
+    def _sub_unregister_topic(self, req):
+        result = self.table.remove_sub(sub=req['ip'], topics=req['topic'])
+        return result
 
-        elif req['type'] == 'sub_exit_system':
-            print('sub exit. ip=%s' % (req['ip']))
-            topics = self.table.get_sub_info(req['ip']).get('topics', [])
-            result = self.table.remove_sub(sub=req['ip'], topics=deepcopy(topics))
-            self.socket.send_json({'msg': result})
+    def _sub_exit_system(self, req):
+        topics = self.table.get_sub_info(req['ip']).get('topics', [])
+        result = self.table.remove_sub(sub=req['ip'], topics=deepcopy(topics))
+        return result
 
-        elif req['type'] == 'pub_heartbeat':
-            result = self.table.refresh_pub(pub=req['ip'])
-            print('heartbeat from pub.ip=%s. msg=%s' % (req['ip'], result))
-            self.socket.send_json({'msg': result})
+    def _pub_heartbeat(self, req):
+        result = self.table.refresh_pub(pub=req['ip'])
+        return result
 
-        elif req['type'] == 'sub_heartbeat':
-            result = self.table.refresh_sub(sub=req['ip'])
-            print('heartbeat from sub.ip=%s. msg=%s' % (req['ip'], result))
-            self.socket.send_json({'msg': result})
+    def _sub_heartbeat(self, req):
+        result = self.table.refresh_sub(sub=req['ip'])
+        return result
 
-        elif req['type'] == 'publish_req':
-            subs = self.table.get_subs(req['topic'])
-            for ip in subs:
-                context = zmq.Context()
-                sub_socket = context.socket(zmq.REQ)
-                sub_socket.connect(ip)
-                sub_socket.send_json({"topic": req['topic'], "value": req['value']})
-                result = sub_socket.recv_string()
-                print('msg sent to ip=%s, result=%s' % (ip, result))
-            self.socket.send_json({})
+class BrokerType1(BrokerBase):
+
+    def __init__(self, config):
+        super().__init__(config)
+        context = zmq.Context()
+        socket = context.socket(zmq.REP)
+        socket.bind("tcp://*:%s" % config['port'])
+        self.socket = socket
+
+    def _add_sub(self, req):
+        super()._add_sub(req)
+        pubs = self.table.get_pubs(req['topic'])
+        if pubs:
+            return pubs[0]
+        else:
+            return ''
+
+class BrokerType2(BrokerBase):
+
+    def __init__(self, config):
+        super().__init__(config)
+        context = zmq.Context()
+        socket = context.socket(zmq.REP)
+        socket.bind("tcp://*:%s" % config['port'])
+        self.socket = socket
+        self.req_handler['publish_req'] = self._publish_req
+
+    def _publish_req(self, req):
+        subs = self.table.get_subs(req['topic'])
+        for ip in subs:
+            context = zmq.Context()
+            sub_socket = context.socket(zmq.REQ)
+            sub_socket.connect(ip)
+            sub_socket.send_json({"topic": req['topic'], "value": req['value']})
+            result = sub_socket.recv_json()
+        return 'msg sent to ip=%s' % subs

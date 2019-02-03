@@ -1,5 +1,4 @@
 from middleware.broker import BrokerType1, BrokerType2
-import time
 
 class Broker:
 
@@ -7,7 +6,9 @@ class Broker:
         self.config = config
 
     def start(self):
-        broker = BrokerType1(self.config)
-        # broker = BrokerType2(self.config)
+        if int(self.config['mode']) == 1:
+            broker = BrokerType1(self.config)
+        else:
+            broker = BrokerType2(self.config)
         while True:
             broker.handle_req()

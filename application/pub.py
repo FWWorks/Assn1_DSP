@@ -66,15 +66,3 @@ class Publisher:
     def set_strength(self, strength):
         self.strength = strength
         return 0
-
-
-import time
-p = Publisher(1, "tcp://127.0.0.1:5000", "tcp://localhost:5555")
-p.register("hello")
-for i in range(3):
-    # x = input('ty')
-
-    p.publish("hello", '555')
-    time.sleep(3)
-
-p.drop_system()

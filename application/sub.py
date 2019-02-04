@@ -61,7 +61,7 @@ class Subscriber:
         while True:
             if self.exited:
                 break
-            time.sleep(5)
+            time.sleep(1)
             self.sub_mid.socket_heartbeat.send_json(
                 (json.dumps({'type': 'sub_heartbeat', 'ip': self.ip, 'mess': "5"})))
             res = self.sub_mid.socket_heartbeat.recv_json()

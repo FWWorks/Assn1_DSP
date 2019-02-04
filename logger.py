@@ -1,9 +1,13 @@
 import logging
 
+loggers = {}
+
 def get_logger(log_file):
 
     # create logger
     logger_name = log_file
+    if logger_name in loggers:
+        return loggers[logger_name]
     logger = logging.getLogger(logger_name)
     logger.setLevel(logging.INFO)
 
@@ -23,4 +27,7 @@ def get_logger(log_file):
     sh.setFormatter(formatter)
     logger.addHandler(fh)
     logger.addHandler(sh)
+
+    loggers[logger_name] = logger
+
     return logger

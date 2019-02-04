@@ -3,24 +3,23 @@ from configobj import ConfigObj
 import sys
 import time
 
-if len(sys.argv) == 2:
-    config_path = sys.argv[1]
-else:
+config_path, item = None, 'Sub2'
+if len(sys.argv) == 1:
     config_path = 'config/subscriber.ini'
+if len(sys.argv) >= 2:
+    config_path = sys.argv[1]
+if len(sys.argv) >= 3:
+    item = sys.argv[2]
 
-if len(sys.argv) == 3:
-    item = sys.argv[3]
-else:
-    item = 'Sub4'
+config = ConfigObj(config_path)
+if item == '':
+    item = list(config.keys())[0]
 
-config = ConfigObj(config_path)[item]
+config = config[item]
 
-p = Subscriber(ip_self=config['sub_addr'], ip_broker=config['broker_addr'], comm_type=int(config['mode']))
-p.register("hello1")
+p = Subscriber(ip_self=config['sub_addr'], ip_broker=config['broker_addr'],
+               comm_type=int(config['mode']), logfile=config['logfile'])
+p.register(config['topic'])
+
 while 1:
-#for i in range(5):
-    # p.notify()
     p.receive()
-    time.sleep(1)
-
-p.exit()

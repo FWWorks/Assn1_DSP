@@ -26,7 +26,7 @@ class Publisher:
         self.pub_mw.register(topic)
         if self.heartthread.is_alive() == False:
             self.heartthread.start()
-        self.logger.info('pub register to bloker on %s. ip=%s, topic=%s'%(self.broker_address, self.ip_address, topic))
+        self.logger.info('pub register to bloker on %s. ip=%s, topic=%s'%(self.broker_address, self.ip_address))
         return 0
 
     '''
@@ -52,7 +52,7 @@ class Publisher:
         while True:
             if self.exited:
                 break
-            time.sleep(5)
+            time.sleep(1)
             self.pub_mw.socket_heartbeat.send_json((json.dumps({'type': 'pub_heartbeat', 'ip': self.ip_address, 'mess': "1"})))
             res = self.pub_mw.socket_heartbeat.recv_json()
         return 0

@@ -58,8 +58,14 @@ class SubBroker:
         self.context_sub = zmq.Context()
         self.socket_sub = self.context_sub.socket(zmq.REQ)
         self.socket_sub.connect(self.ip_b)
-        self.socket_sub.send_json({"type": "add_subscriber", "ip": self.ip, "topic": topic})
-        res = self.socket_sub.recv_json()
+
+        if isinstance(topic, list):
+            for t in topic:
+                self.socket_sub.send_json({"type": "add_subscriber", "ip": self.ip, "topic": t})
+                res = self.socket_sub.recv_json()
+        else:
+            self.socket_sub.send_json({"type": "add_subscriber", "ip": self.ip, "topic": topic})
+            res = self.socket_sub.recv_json()
 
         self.context_ntf = zmq.Context()
         self.socket_ntf = self.context_ntf.socket(zmq.REP)

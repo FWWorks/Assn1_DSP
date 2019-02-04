@@ -90,8 +90,15 @@ class PublisherViaBroker:
         context = zmq.Context()
         self.socket_broker = context.socket(zmq.REQ)
         self.socket_broker.connect(self.broker_address)
-        self.socket_broker.send_json((json.dumps({'type': 'add_publisher', 'ip': self.ip_address, 'topic': topic})))
-        msg = self.socket_broker.recv_json()
+        if isinstance(topic, list):
+            for t in topic:
+                self.socket_broker.send_json(
+                    (json.dumps({'type': 'add_publisher', 'ip': self.ip_address, 'topic': t})))
+                msg = self.socket_broker.recv_json()
+        else:
+            self.socket_broker.send_json((json.dumps({'type': 'add_publisher',
+                                                      'ip': self.ip_address, 'topic': topic})))
+            msg = self.socket_broker.recv_json()
         context2 = zmq.Context()
         self.socket_heartbeat = context2.socket(zmq.REQ)
         self.socket_heartbeat.connect(self.broker_address)

@@ -3,6 +3,12 @@ import json
 from datetime import datetime
 from copy import deepcopy
 from logger import get_logger
+import time
+import threading
+
+table_lock = threading.Lock()
+
+tf = "%Y-%m-%d %H:%M:%S"
 
 class RegisterTable:
 
@@ -14,12 +20,13 @@ class RegisterTable:
     def add_pub(self, pub, topics):
         if isinstance(topics, str):
             topics = [topics]
-        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        now = datetime.now().strftime(tf)
         if pub in self.pubs:
             self.pubs[pub]['since'] = now
+            self.pubs[pub]['status'] = 0
             self.pubs[pub]['topics'].update(topics)
         else:
-            self.pubs[pub] = {'since': now, 'topics': set(topics)}
+            self.pubs[pub] = {'since': now, 'topics': set(topics), 'status':0}
         for t in topics:
             if t not in self.topics:
                 self.topics[t] = {'pub': set(), 'sub': set()}
@@ -29,12 +36,13 @@ class RegisterTable:
     def add_sub(self, sub, topics):
         if isinstance(topics, str):
             topics = [topics]
-        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        now = datetime.now().strftime(tf)
         if sub in self.subs:
             self.subs[sub]['since'] = now
+            self.subs[sub]['status'] = 0
             self.subs[sub]['topics'].update(topics)
         else:
-            self.subs[sub] = {'since': now, 'topics': set(topics)}
+            self.subs[sub] = {'since': now, 'topics': set(topics), 'status': 0}
         for t in topics:
             if t not in self.topics:
                 self.topics[t] = {'pub': set(), 'sub': set()}
@@ -69,13 +77,13 @@ class RegisterTable:
         return ''
 
     def refresh_sub(self, sub):
-        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        now = datetime.now().strftime(tf)
         if sub in self.subs:
             self.subs[sub]['since'] = now
         return now
 
     def refresh_pub(self, pub):
-        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        now = datetime.now().strftime(tf)
         if pub in self.pubs:
             self.pubs[pub]['since'] = now
         return now
@@ -83,18 +91,41 @@ class RegisterTable:
     def get_pubs(self, topic):
         if topic not in self.topics:
             return []
-        return list(self.topics[topic]['pub'])
+        available_pubs = []
+        for pub in self.topics[topic]['pub']:
+            if self.pubs[pub]['status'] == 0:
+                available_pubs.append(pub)
+        return available_pubs
 
     def get_subs(self, topic):
         if topic not in self.topics:
             return []
-        return list(self.topics[topic]['sub'])
+        available_subs = []
+        for sub in self.topics[topic]['sub']:
+            if self.subs[sub]['status'] == 0:
+                available_subs.append(sub)
+        return available_subs
 
     def get_pub_info(self, pub):
         return self.pubs.get(pub, {})
 
     def get_sub_info(self, pub):
         return self.pubs.get(pub, {})
+
+    def check_aliveness(self):
+        now = datetime.now()
+        dead = []
+        for k, v in self.pubs.items():
+            dt = now-datetime.strptime(v['since'], tf)
+            if dt.seconds > 3 and v['status'] != -1:
+                v['status'] = -1
+                dead.append(('pub', k))
+        for k, v in self.subs.items():
+            dt = now-datetime.strptime(v['since'], tf)
+            if dt.seconds > 3 and v['status'] != -1:
+                v['status'] = -1
+                dead.append(('sub', k))
+        return dead
 
 class BrokerBase:
 
@@ -114,12 +145,24 @@ class BrokerBase:
         self.socket = None
         self.logger = get_logger(config['logfile'])
 
+    def check_dead_entity(self):
+        while 1:
+            table_lock.acquire(blocking=True)
+            dead = self.table.check_aliveness()
+            table_lock.release()
+            if dead:
+                self.logger.error('missing too much heartbeats, disconnected. Info=%s'%dead)
+            time.sleep(1)
+
     def handle_req(self):
         req = self.socket.recv_json()
         if isinstance(req, str):
             req = json.loads(req)
         result = self.req_handler[req['type']](req)
-        self.logger.info('request=%s, response=%s'%(req, result))
+        if req['type'].find('heartbeat') != -1:
+            self.logger.debug('request=%s, response=%s'%(req, result))
+        else:
+            self.logger.info('request=%s, response=%s' % (req, result))
         self.socket.send_json({'msg': result})
 
     def _add_pub(self, req):
@@ -153,7 +196,6 @@ class BrokerBase:
         return result
 
     def _sub_heartbeat(self, req):
-        print('xxxxxxxxxxxxxxxxxxxxxx')
         result = self.table.refresh_sub(sub=req['ip'])
         return result
 

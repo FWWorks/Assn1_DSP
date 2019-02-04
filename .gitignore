@@ -1,3 +1,4 @@
 .idea
 /application/*.pyc
 .pyc
+.log

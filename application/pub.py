@@ -26,7 +26,7 @@ class Publisher:
         self.pub_mw.register(topic)
         if self.heartthread.is_alive() == False:
             self.heartthread.start()
-        self.logger.info('pub register to bloker on %s. ip=%s, topic=%s'%(self.broker_address, self.ip_address))
+        self.logger.info('pub register to bloker on %s. ip=%s, topic=%s'%(self.broker_address, self.ip_address, topic))
         return 0
 
     '''

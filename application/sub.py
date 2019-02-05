@@ -37,6 +37,7 @@ class Subscriber:
         if self.comm_type == sub_broker:
             msg = self.sub_mid.notify()
         self.logger.info('receive a msg=%s'%msg)
+        return msg
 
     '''
     subscriber cancels a topic

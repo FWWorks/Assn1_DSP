@@ -1,6 +1,9 @@
 from middleware.broker import BrokerType1, BrokerType2
 from logger import get_logger
 import threading
+import time
+
+flag = True
 
 class Broker:
 
@@ -17,5 +20,6 @@ class Broker:
         self.logger.info('broker started. mode=%s, port=%s'%(self.config['mode'], self.config['port']))
         check_thread = threading.Thread(target=broker.check_dead_entity)
         check_thread.start()
-        while True:
+
+        while flag:
             broker.handle_req()

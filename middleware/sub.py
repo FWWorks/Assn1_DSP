@@ -36,10 +36,10 @@ class SubDirect:
         return msg
 
     def unregister(self, topic):
-        self.socket_sub.send_json(json.dumps({"type": "remove_subscriber", "ip": self.ip, "topic": topic}))
+        self.socket_sub.send_json(json.dumps({"type": "sub_unregister_topic", "ip": self.ip, "topic": topic}))
 
     def exit(self):
-        self.socket_sub.send_json(json.dumps({"type": "exit_subscriber", "ip": self.ip, "topic": "all"}))
+        self.socket_sub.send_json(json.dumps({"type": "sub_exit_system", "ip": self.ip, "topic": "all"}))
 
 
 class SubBroker:

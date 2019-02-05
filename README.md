@@ -28,19 +28,20 @@ A publisher or a subscriber sends heartbeat messages to the broker once it regis
 
 2 Install python3.6
 
-3 Install dependencies using "pip install -r requirements.txt"
+3 Install dependencies using "**pip install -r requirements.txt**"
 
 The directory of our program with a brief description is as following.
+
 ![Alt text](./img/dir.png "")
 
 ### Step 1 Create a network topology using mininet.
 For our example, we use the simplest topology with 3 nodes with their ips
 
-10.0.0.1 (broker)
+h1=10.0.0.1 (broker)
 
-10.0.0.2 (publisher)
+h2=10.0.0.2 (publisher)
 
-10.0.0.3 (subscriber)
+h3=10.0.0.3 (subscriber)
 
 ### Step 2 Modify the configurations for broker, publisher and subscriber.
 All the configurations are .ini files in config/.
@@ -57,37 +58,41 @@ Multiple publishers and subscribers are allowed, although not showed here for si
 ![Alt text](./img/subscriber_config.png "")
 
 ### Step 3 Start the broker.
-Start the broker using "python3 start_broker.py config/broker.ini Broker1".
+Start the broker using "**python3 start_broker.py config/broker.ini Broker1**".
 
 The parameter "config/broker.ini" specifys which configuration we are using.
 
 The parameter "Broker1" specifys which config unit in the configuration file we are using.
 
 Please make sure broker is started before publisher and subscriber.
+
 ![Alt text](./img/broker_start.png "")
 
 ### Step 4 Start the publisher.
-Start the publisher using "python3 start_pub.py config/publisher.ini Pub1".
+Start the publisher using "**python3 start_pub.py config/publisher.ini Pub1**".
 
 This command is in a similar form as that for broker.
 
 After the publisher is started, you can type messages you want to publish in that window.
+
 ![Alt text](./img/pub_start.png "")
 
 ### Step 5 Start the subscriber.
-Start the publisher using "python3 start_sub.py config/subscriber.ini Sub1".
+Start the publisher using "**python3 start_sub.py config/subscriber.ini Sub1**".
 
 This command is in a similar form as that for broker.
 
 After the subscriber is started, you can publish messages through publisher and see what are received in the subscriber window.
 
 Note that all messages published before a subscriber getting started are dropped.
+
 ![Alt text](./img/sub_start.png "")
 
 ## Test case
-To execute the tests, use "python3 -m pytest test/".
+To execute the tests, use "**python3 -m pytest test/**".
 
 Tests cover pub/sub registration, message publishing, message receiving under both transmission modes.
+
 ![Alt text](./img/test.png "")
 
 ## Performance measurement

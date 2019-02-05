@@ -22,6 +22,7 @@ We realized the functions for publishers and subscribers leaving the system, pub
 A publisher or a subscriber sends heartbeat messages to the broker once it registers to be a member in the system. And if the broker haven’t received a heartbeat message from a publisher/subscriber, the broker will drop this member out from the system because there must be something wrong with the member. 
 
 ## How to run our code
+![Alt text](./img/dir.png "")
 
 ## Test case
 

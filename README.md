@@ -1,5 +1,5 @@
 # Assn1_DSP
-## Team member
+## Team member(T4)
 Wei Fan(wei.fan@vanderbilt.edu Github id: FWWorks)  
 Dingjie Su(dingjie.su@Vanderbilt.Edu Github id: sudmat)  
 Zhehao Zeng(zhehao.zeng@vanderbilt.edu Github id: frankvandy2018) 

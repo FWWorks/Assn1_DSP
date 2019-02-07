@@ -96,3 +96,30 @@ Tests cover pub/sub registration, message publishing, message receiving under bo
 ![Alt text](./img/test.png "")
 
 ## Performance measurement
+We did some performance test on the data amount and subscriber's number for both two approaches of pub/sub model we realized and collected the performance data. Related code and data can be found in the 'performance data' file folder.
+
+For simply notation, let's call the approach in which subscribers get address of publisher from broker and request message directly from the publisher mode1/approach1, and the approach in which subscribers receive messages from broker mode2/approach2. 
+
+We measure performance according to the response time of intervals between a message being published by a publisher and reveived by a subscriber. For example, if a publisher publishs a message at time A, and this message is successfully received by a subscriber at time B, the intervals(B-A) is what we use to measure the preformance of pub/sub model. For each test, we generated 10 messages and calculate the average response time of delivery time of the 10 messages as response time. 
+
+We conducted performance by varying number of subscribers or varying the data amount for both two approaches to see if data amount or subscriber amount will effect the response time. 
+
+First, we did performance measurement test on mode1/approach1.
+
+![Alt text](./img/1-N time.PNG "")
+
+From this plot we can see, with the subscriber's amount increasing, the average response time shows a positive correlation trend. The average response time ranges from 1 ms(for 1 subscriber) to 35 ms(for 50 subscribers).
+
+![Alt text](./img/1-1 data amount approach1.PNG "")
+
+We write scripts to generate different sizes of message(ranges from 1b to 1000b) and apply various data amount to a pub/sub system which only has one publisher and one subscriber. From the plot, we observe the average response time shows a positive correlation trend with data amount, from 1 ms to 8 ms. 
+
+Then we did the same experiments on mode2/approach2.
+
+![Alt text](./img/1-N time approach2.PNG "")
+
+![Alt text](./img/1-1 data amount approach2.PNG "")
+
+From these results, we can draw the same result like what is described in the tests of approach1, that is, both data amount and subscribers amount influences the performance of response time. The larger data publisher sends, the more subscribers the network contains, the more time it takes to convey the message, which means a descrease in the performance. 
+But, what makes approach1 and approach2 different is the response time range. It's obvious that using approach2 takes much more time than using approach1 under the same settings. So that's maybe where the bottleneck is, that it takes much time for broker to send messages to subscribers. So to solve this bottleneck, maybe we should do something to make the process of mapping publishers to subscribers faster.
+
